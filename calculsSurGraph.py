@@ -6,7 +6,7 @@ Created on Wed Jan 29 08:44:21 2020
 """
 
 
-from data2py import slt
+from defGraph import Graph
 
 data_file_name = '2_Piscine-Patinoire_Campus.txt'
 
@@ -56,7 +56,6 @@ regular_date_back1 = dates2dic(slited_content[2])
 we_holidays_path1 = slited_content[3]
 we_holidays_date_go1 = dates2dic(slited_content[4])
 we_holidays_date_back1 = dates2dic(slited_content[5])
-# Faire des regular path etc pour les deux combinés
 
 g = {
     'LYCEE_DE_POISY' : ['POISY_COLLEGE'],
@@ -84,10 +83,11 @@ g = {
     }
 
 graph = Graph(g)
+print("Arrêts : " ,graph.vertices())
 
-#start_vertex = input("arret de départ ? \n")
-#end_vertex = input("arret d'arrivée ? \n")
-#time = input("horaire de départ ? format hh:mm \n")
+start_vertex = input("arret de départ ? \n")
+end_vertex = input("arret d'arrivée ? \n")
+time = input("horaire de départ ? format hh:mm \n")
 
 def shortest(start_vertex, end_vertex):
     paths = graph.find_all_paths(start_vertex, end_vertex)
@@ -95,7 +95,7 @@ def shortest(start_vertex, end_vertex):
     for chemin in paths:
         if len(chemin) <= len(result):
             result = chemin
-    return result
+    print("SHORTEST \n Le chemin le plus court est ", result)
 
 
 #print(shortest('CAMPUS','Courier'))
@@ -174,37 +174,76 @@ def fastest(start_vertex, end_vertex, time):
     heure=time.split(':')[0]
     minutes=time.split(':')[1]
     toti=int(heure)*60 + int(minutes)
-    print(toti)
+#    print(toti)
     paths = graph.find_all_paths(start_vertex, end_vertex)
-    #print(paths)
+#    print(paths)
     ListeTemps = []
     tpstot = 0
     indice = index_departure(start_vertex, end_vertex, time)
-    indice = 2
-    #print(paths)
+#    indice = 2
     for path in paths:
         tpstot=0
         for i in range (1,len(path)):
-            print(path[i])
-#            print(convert_go(path[i]))
-#            print(convert_go(path[i])[indice])
-#            print(convert_go(path[i-1])[indice])
             if go_or_not(start_vertex, end_vertex) == True:
                 a = convert_go(path[i])[indice] - convert_go(path[i-1])[indice]
+                if a < 0:
+                    a = convert_go(path[i])[indice+1] - convert_go(path[i-1])[indice]
             else:
                 a = convert_back(path[i])[indice] - convert_back(path[i-1])[indice]
-            print(a)
+                if a <0:
+                     a = convert_back(path[i])[indice+1] - convert_back(path[i-1])[indice]
+#            print(a)
             tpstot = tpstot + a
         ListeTemps.append(tpstot)
-    print(paths[ListeTemps.index(min(ListeTemps))])
+#    print(ListeTemps)
+    print("FASTEST \n Chemin effectué " , paths[ListeTemps.index(min(ListeTemps))])
     heureArrivée=(toti+min(ListeTemps))//60
     minuteArrivée=(toti+min(ListeTemps))%60
-    print(min(ListeTemps))
+    print("Temps de trajet minimal " , min(ListeTemps) , " minutes")
     print("Arrivée à " , heureArrivée,"h",minuteArrivée)
-       
 
-#fastest('Arcadium','CAMPUS','8:41')
-fastest('LYCEE_DE_POISY','France_Barattes', '10:52')
+def foremost(start_vertex, end_vertex, time):
+    heure=time.split(':')[0]
+    minutes=time.split(':')[1]
+    toti=int(heure)*60 + int(minutes)
+    
+#    print(toti)
+    paths = graph.find_all_paths(start_vertex, end_vertex)
+#    print(paths)
+    ListeTemps = []
+    tpstot = 0
+    indice = index_departure(start_vertex, end_vertex, time)
+    sens = go_or_not(start_vertex, end_vertex)
+#    indice = 2
+    for path in paths:
+        tpstot=0
+        for i in range (1,len(path)):
+            if sens == True:
+                a = convert_go(path[i])[indice] - convert_go(path[i-1])[indice]
+                if a < 0:
+                    a = convert_go(path[i])[indice+1] - convert_go(path[i-1])[indice]
+            else:
+                a = convert_back(path[i])[indice] - convert_back(path[i-1])[indice]
+                if a <0:
+                     a = convert_back(path[i])[indice+1] - convert_back(path[i-1])[indice]
+#            print(a)
+            tpstot = tpstot + a
+        ListeTemps.append(tpstot)
+#    print(ListeTemps)
+    if sens == True:
+        tempsAttente = convert_go(paths[0][0])[indice]-toti
+    else:
+        tempsAttente = convert_back(paths[0][0])[indice]-toti
+    print("FOREMOST \n temps d'attente à l'arrêt : " ,tempsAttente , "minutes")
+    print("Chemin effectué " , paths[ListeTemps.index(min(ListeTemps))])
+    heureArrivée=(toti+min(ListeTemps)+tempsAttente)//60
+    minuteArrivée=(toti+min(ListeTemps)+tempsAttente)%60
+    print("Temps de trajet minimal " , min(ListeTemps)+tempsAttente , " minutes")
+    print("Arrivée à " , heureArrivée,"h",minuteArrivée)
+
+shortest(start_vertex,end_vertex)
+fastest(start_vertex,end_vertex, time)
+foremost(start_vertex,end_vertex, time)
 #print(convert_go('POISY_COLLEGE'))
 #paths = graph.find_all_paths('Arcadium','Place_des_Romains')
 #print(paths) 
