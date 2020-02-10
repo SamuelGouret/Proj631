@@ -8,6 +8,8 @@ Created on Wed Jan 29 08:44:21 2020
 
 from defGraph import Graph
 
+# lecture des fichiers
+
 data_file_name = '2_Piscine-Patinoire_Campus.txt'
 
 try:
@@ -41,6 +43,8 @@ def dates2dic(dates):
         dic[tmp[0]] = tmp[1:]
     return dic
 
+# recupération des arrêts et horaire en fonction des jours
+
 slited_content = content2.split("\n\n")
 regular_path = slited_content[0]
 regular_date_go = dates2dic(slited_content[1])
@@ -56,6 +60,8 @@ regular_date_back1 = dates2dic(slited_content[2])
 we_holidays_path1 = slited_content[3]
 we_holidays_date_go1 = dates2dic(slited_content[4])
 we_holidays_date_back1 = dates2dic(slited_content[5])
+
+# graph défini manuellement 
 
 g = {
     'LYCEE_DE_POISY' : ['POISY_COLLEGE'],
@@ -83,12 +89,16 @@ g = {
     }
 
 graph = Graph(g)
+
+# Affichage des arrêts pour aider l'utilisateur
 print("Arrêts : " ,graph.nodes())
 
+# Demande des informations d'entrées à l'utilisateur
 start_node = input("arret de départ ? \n")
 end_node = input("arret d'arrivée ? \n")
 time = input("horaire de départ ? format hh:mm \n")
 
+# shortest, qui calcule le chemin le plus court en nombre d'arcs
 def shortest(start_node, end_node):
     paths = graph.find_all_paths(start_node, end_node)
     result = paths[0]
@@ -102,6 +112,7 @@ def shortest(start_node, end_node):
 #print(graph.edges())
 #print(graph.vertices())
 
+# En fonction des arrêts de départ et d'arrivée, renvoie le sens de la ligne (True or False)
 def go_or_not(start_node, end_node):
     valD = valD = 0
     for noeud in graph.nodes():
@@ -114,6 +125,7 @@ def go_or_not(start_node, end_node):
     else:
         return False
 
+# Converti les horraires en unité de temps (minutes)
 def convert_go(start_node):
     val1=[]
     L=[]
@@ -159,6 +171,8 @@ def convert(start_node, end_node):
     elif go_or_not(start_node, end_node) == False:
         return convert_back(start_node)
 
+
+# Fonction qui recupère l'index du bus en fonction de l'horaire. L'index 4 correspond au 4e bus parti depuis le début de la journée
 def index_departure(start_node, end_node, time):
     heure=time.split(':')[0]
     minutes=time.split(':')[1]
@@ -170,6 +184,7 @@ def index_departure(start_node, end_node, time):
         if int(toti)<int(Harret):
             return L.index(Harret)
         
+# Fonction calculant le trajet qui prend le moins de temps de transport      
 def fastest(start_node, end_node, time):
     heure=time.split(':')[0]
     minutes=time.split(':')[1]
@@ -202,6 +217,7 @@ def fastest(start_node, end_node, time):
     print("Temps de trajet minimal " , min(ListeTemps) , " minutes")
 #    print("Arrivée à " , heureArrivée,"h",minuteArrivée)
 
+# Fonction calculant le trajet qui arrive au plus tôt
 def foremost(start_node, end_vertex, time):
     heure=time.split(':')[0]
     minutes=time.split(':')[1]
