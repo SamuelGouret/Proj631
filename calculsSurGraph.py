@@ -83,14 +83,14 @@ g = {
     }
 
 graph = Graph(g)
-print("Arrêts : " ,graph.vertices())
+print("Arrêts : " ,graph.nodes())
 
-start_vertex = input("arret de départ ? \n")
-end_vertex = input("arret d'arrivée ? \n")
+start_node = input("arret de départ ? \n")
+end_node = input("arret d'arrivée ? \n")
 time = input("horaire de départ ? format hh:mm \n")
 
-def shortest(start_vertex, end_vertex):
-    paths = graph.find_all_paths(start_vertex, end_vertex)
+def shortest(start_node, end_node):
+    paths = graph.find_all_paths(start_node, end_node)
     result = paths[0]
     for chemin in paths:
         if len(chemin) <= len(result):
@@ -102,30 +102,30 @@ def shortest(start_vertex, end_vertex):
 #print(graph.edges())
 #print(graph.vertices())
 
-def go_or_not(start_vertex, end_vertex):
+def go_or_not(start_node, end_node):
     valD = valD = 0
-    for noeud in graph.vertices():
-        if start_vertex == noeud:
-            valD = graph.vertices().index(start_vertex)
-        if end_vertex == noeud:
-            valA = graph.vertices().index(end_vertex)
+    for noeud in graph.nodes():
+        if start_node == noeud:
+            valD = graph.nodes().index(start_node)
+        if end_node == noeud:
+            valA = graph.nodes().index(end_node)
     if valD < valA:
         return True
     else:
         return False
 
-def convert_go(start_vertex):
+def convert_go(start_node):
     val1=[]
     L=[]
-    if start_vertex in regular_path:
-        for arret in regular_date_go[start_vertex]:
+    if start_node in regular_path:
+        for arret in regular_date_go[start_node]:
             val1 = arret.split(':')
             if val1 != ['-']:
                 tot1 = int(val1[0])*60 + int(val1[1])
                 L.append(tot1)
                 
-    elif start_vertex in regular_path1:
-        for arret in regular_date_go1[start_vertex]:
+    elif start_node in regular_path1:
+        for arret in regular_date_go1[start_node]:
             val1 = arret.split(':')
             if val1 != ['-']:
                 tot1 = int(val1[0])*60 + int(val1[1])
@@ -134,18 +134,18 @@ def convert_go(start_vertex):
             
     return L
 
-def convert_back(start_vertex):
+def convert_back(start_node):
     val1=[]
     L=[]
-    if start_vertex in regular_path:
-        for arret in regular_date_back[start_vertex]:
+    if start_node in regular_path:
+        for arret in regular_date_back[start_node]:
             val1 = arret.split(':')
             if val1 != ['-']:
                 tot1 = int(val1[0])*60 + int(val1[1])
                 L.append(tot1)
                 
-    elif start_vertex in regular_path1:
-        for arret in regular_date_back1[start_vertex]:
+    elif start_node in regular_path1:
+        for arret in regular_date_back1[start_node]:
             val1 = arret.split(':')
             if val1 != ['-']:
                 tot1 = int(val1[0])*60 + int(val1[1])
@@ -153,38 +153,38 @@ def convert_back(start_vertex):
             
     return L
 
-def convert(start_vertex, end_vertex):
-    if go_or_not(start_vertex, end_vertex) == True:
-        return convert_go(start_vertex)
-    elif go_or_not(start_vertex, end_vertex) == False:
-        return convert_back(start_vertex)
+def convert(start_node, end_node):
+    if go_or_not(start_node, end_node) == True:
+        return convert_go(start_node)
+    elif go_or_not(start_node, end_node) == False:
+        return convert_back(start_node)
 
-def index_departure(start_vertex, end_vertex, time):
+def index_departure(start_node, end_node, time):
     heure=time.split(':')[0]
     minutes=time.split(':')[1]
     toti=int(heure)*60 + int(minutes)
-    L = convert(start_vertex, end_vertex)
+    L = convert(start_node, end_node)
 #    print(L)
 #    print(toti)
     for Harret in L:
         if int(toti)<int(Harret):
             return L.index(Harret)
         
-def fastest(start_vertex, end_vertex, time):
+def fastest(start_node, end_node, time):
     heure=time.split(':')[0]
     minutes=time.split(':')[1]
     toti=int(heure)*60 + int(minutes)
 #    print(toti)
-    paths = graph.find_all_paths(start_vertex, end_vertex)
+    paths = graph.find_all_paths(start_node, end_node)
 #    print(paths)
     ListeTemps = []
     tpstot = 0
-    indice = index_departure(start_vertex, end_vertex, time)
+    indice = index_departure(start_node, end_node, time)
 #    indice = 2
     for path in paths:
         tpstot=0
         for i in range (1,len(path)):
-            if go_or_not(start_vertex, end_vertex) == True:
+            if go_or_not(start_node, end_node) == True:
                 a = convert_go(path[i])[indice] - convert_go(path[i-1])[indice]
                 if a < 0:
                     a = convert_go(path[i])[indice+1] - convert_go(path[i-1])[indice]
@@ -202,18 +202,18 @@ def fastest(start_vertex, end_vertex, time):
     print("Temps de trajet minimal " , min(ListeTemps) , " minutes")
     print("Arrivée à " , heureArrivée,"h",minuteArrivée)
 
-def foremost(start_vertex, end_vertex, time):
+def foremost(start_node, end_vertex, time):
     heure=time.split(':')[0]
     minutes=time.split(':')[1]
     toti=int(heure)*60 + int(minutes)
     
 #    print(toti)
-    paths = graph.find_all_paths(start_vertex, end_vertex)
+    paths = graph.find_all_paths(start_node, end_node)
 #    print(paths)
     ListeTemps = []
     tpstot = 0
-    indice = index_departure(start_vertex, end_vertex, time)
-    sens = go_or_not(start_vertex, end_vertex)
+    indice = index_departure(start_node, end_node, time)
+    sens = go_or_not(start_node, end_node)
 #    indice = 2
     for path in paths:
         tpstot=0
@@ -241,9 +241,11 @@ def foremost(start_vertex, end_vertex, time):
     print("Temps de trajet minimal " , min(ListeTemps)+tempsAttente , " minutes")
     print("Arrivée à " , heureArrivée,"h",minuteArrivée)
 
-shortest(start_vertex,end_vertex)
-fastest(start_vertex,end_vertex, time)
-foremost(start_vertex,end_vertex, time)
+shortest(start_node,end_node)
+fastest(start_node,end_node, time)
+foremost(start_node,end_node, time)
+graph.add_node("z")
+print(graph.nodes())
 #print(convert_go('POISY_COLLEGE'))
 #paths = graph.find_all_paths('Arcadium','Place_des_Romains')
 #print(paths) 
