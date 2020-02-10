@@ -60,7 +60,7 @@ we_holidays_date_back1 = dates2dic(slited_content[5])
 
 all_stops = regular_path.split(" N ") + regular_path1.split(" N ")
 
-
+# Graphe défini manuellement
 
 
 #noeuds = (['LYCÉE_DE_POISY', 'POISY_COLLÈGE', 'Vernod', 'Meythet_Le_Rabelais', 'Chorus', 'Mandallaz', 'GARE', 'France_Barattes', 'C.E.S._Barattes', 'VIGNIÈRES', 'Ponchy', 'PARC_DES_GLAISINS', 'PISCINE-PATINOIRE', 'Arcadium', 'Parc_des_Sports', 'Place_des_Romains', 'Courier', 'Bonlieu', 'Préfecture_Pâquier', 'Impérial', 'Pommaries', 'CAMPUS'])
@@ -115,7 +115,9 @@ class Node:
 #        return edges
 #    
 #    #print(generate_edges(graph))
-    
+
+
+# Creation classique d'un graphe simple
 class Graph(object):
 
     def __init__(self, graph_dict=None):
@@ -152,7 +154,7 @@ class Graph(object):
                     edges.append({node, neighbour})
         return edges
 
-        
+# Fonction retournant un chemin entre deux noeuds      
     def find_path(self, start_node, end_node, path=None):
         if path == None:
             path = []
@@ -168,7 +170,8 @@ class Graph(object):
                 if extended_path: 
                     return extended_path
         return None
-    
+  
+# Fonction retournant tous les chemins entre deux noeuds 
     def find_all_paths(self, start_node, end_node, path=[]):
         graph = self.__graph_dict 
         path = path + [start_node]
