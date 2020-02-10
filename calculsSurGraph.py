@@ -200,7 +200,7 @@ def fastest(start_node, end_node, time):
     heureArrivée=(toti+min(ListeTemps))//60
     minuteArrivée=(toti+min(ListeTemps))%60
     print("Temps de trajet minimal " , min(ListeTemps) , " minutes")
-    print("Arrivée à " , heureArrivée,"h",minuteArrivée)
+#    print("Arrivée à " , heureArrivée,"h",minuteArrivée)
 
 def foremost(start_node, end_vertex, time):
     heure=time.split(':')[0]
@@ -238,7 +238,7 @@ def foremost(start_node, end_vertex, time):
     print("Chemin effectué " , paths[ListeTemps.index(min(ListeTemps))])
     heureArrivée=(toti+min(ListeTemps)+tempsAttente)//60
     minuteArrivée=(toti+min(ListeTemps)+tempsAttente)%60
-    print("Temps de trajet minimal " , min(ListeTemps)+tempsAttente , " minutes")
+#    print("Temps de trajet minimal " , min(ListeTemps)+tempsAttente , " minutes")
     print("Arrivée à " , heureArrivée,"h",minuteArrivée)
 
 shortest(start_node,end_node)
