@@ -10,6 +10,31 @@ from defGraph import Graph
 
 # graph défini manuellement 
 
+graph = {
+        'LYCÉE_DE_POISY' : ['POISY_COLLÈGE'],
+        'POISY_COLLÈGE' : ['LYCÉE_DE_POISY','Vernod'],
+        'Vernod' : ['POISY_COLLÈGE', 'Meythet_Le_Rabelais'],
+        'Meythet_Le_Rabelais' : ['Vernod', 'Chorus'],
+        'Chorus' : ['Meythet_Le_Rabelais', 'Mandallaz'],
+        'Mandallaz' : ['GARE', 'Chorus'],
+        'GARE' : ['Mandallaz', 'France_Barattes', 'Bonlieu','Courier'],
+        'France_Barattes' : ['C.E.S._Barattes','GARE'],
+        'C.E.S._Barattes' : ['France_Barattes','VIGNIÈRES'],
+        'VIGNIÈRES' : ['Ponchy','C.E.S._Barattes','CAMPUS','Pommaries'],
+        'Ponchy' : ['VIGNIÈRES','PARC_DES_GLAISINS'],
+        'PARC_DES_GLAISINS' : ['Ponchy','PISCINE-PATINOIRE'],
+        'PISCINE-PATINOIRE' : ['PARC_DES_GLAISINS','Arcadium'],
+        'Arcadium' : ['PISCINE-PATINOIRE','Parc_des_Sports'],
+        'Parc_des_Sports' : ['Place_des_Romains','Arcadium'],
+        'Place_des_Romains' : ['Parc_des_Sports','Courier'],
+        'Courier' : ['Place_des_Romains','GARE'],
+        'Bonlieu' : ['GARE','Préfecture_Pâquier'],
+        'Préfecture_Pâquier' : ['Bonlieu','Impérial'],
+        'Impérial' : ['Préfecture_Pâquier','Pommaries'],
+        'Pommaries' : ['Impérial','VIGNIÈRES'],
+        'CAMPUS' : ['VIGNIÈRES'],
+        }
+
 graph = Graph(g)
 
 # Affichage des arrêts pour aider l'utilisateur
