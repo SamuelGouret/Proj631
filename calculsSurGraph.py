@@ -8,85 +8,7 @@ Created on Wed Jan 29 08:44:21 2020
 
 from defGraph import Graph
 
-# lecture des fichiers
-
-data_file_name = '2_Piscine-Patinoire_Campus.txt'
-
-try:
-    with open(data_file_name, 'r') as f:
-        content2 = f.read()
-        
-except OSError:
-    # 'File not found' error message.
-    print("File not found")
-
-f.close()
-
-data_file_name = '1_Poisy-ParcDesGlaisins.txt'
-
-try:
-    with open(data_file_name, 'r') as h:
-        content1 = h.read()
-        
-except OSError:
-    # 'File not found' error message.
-    print("File not found")
-
-h.close()
-
-def dates2dic(dates):
-    dic = {}
-    splitted_dates = dates.split("\n")
-    #print(splitted_dates)
-    for stop_dates in splitted_dates:
-        tmp = stop_dates.split(" ")
-        dic[tmp[0]] = tmp[1:]
-    return dic
-
-# recupération des arrêts et horaire en fonction des jours
-
-slited_content = content2.split("\n\n")
-regular_path = slited_content[0]
-regular_date_go = dates2dic(slited_content[1])
-regular_date_back = dates2dic(slited_content[2])
-we_holidays_path = slited_content[3]
-we_holidays_date_go = dates2dic(slited_content[4])
-we_holidays_date_back = dates2dic(slited_content[5])
-
-slited_content = content1.split("\n\n")
-regular_path1 = slited_content[0]
-regular_date_go1 = dates2dic(slited_content[1])
-regular_date_back1 = dates2dic(slited_content[2])
-we_holidays_path1 = slited_content[3]
-we_holidays_date_go1 = dates2dic(slited_content[4])
-we_holidays_date_back1 = dates2dic(slited_content[5])
-
 # graph défini manuellement 
-
-g = {
-    'LYCEE_DE_POISY' : ['POISY_COLLEGE'],
-    'POISY_COLLEGE' : ['LYCÉE_DE_POISY','Vernod'],
-    'Vernod' : ['POISY_COLLEGE', 'Meythet_Le_Rabelais'],
-    'Meythet_Le_Rabelais' : ['Vernod', 'Chorus'],
-    'Chorus' : ['Meythet_Le_Rabelais', 'Mandallaz'],
-    'Mandallaz' : ['GARE', 'Chorus'],
-    'GARE' : ['Mandallaz', 'France_Barattes', 'Bonlieu','Courier'],
-    'France_Barattes' : ['C.E.S._Barattes','GARE'],
-    'C.E.S._Barattes' : ['France_Barattes','VIGNIERES'],
-    'VIGNIERES' : ['Ponchy','C.E.S._Barattes','CAMPUS','Pommaries'],
-    'Ponchy' : ['VIGNIERES','PARC_DES_GLAISINS'],
-    'PARC_DES_GLAISINS' : ['Ponchy'],
-    'PISCINE-PATINOIRE' : ['Arcadium'],
-    'Arcadium' : ['PISCINE-PATINOIRE','Parc_des_Sports'],
-    'Parc_des_Sports' : ['Place_des_Romains','Arcadium'],
-    'Place_des_Romains' : ['Parc_des_Sports','Courier'],
-    'Courier' : ['Place_des_Romains','GARE'],
-    'Bonlieu' : ['GARE','Préfecture_Pâquier'],
-    'Préfecture_Pâquier' : ['Bonlieu','Impérial'],
-    'Impérial' : ['Préfecture_Pâquier','Pommaries'],
-    'Pommaries' : ['Impérial','VIGNIERES'],
-    'CAMPUS' : ['VIGNIERES'],
-    }
 
 graph = Graph(g)
 
@@ -189,13 +111,10 @@ def fastest(start_node, end_node, time):
     heure=time.split(':')[0]
     minutes=time.split(':')[1]
     toti=int(heure)*60 + int(minutes)
-#    print(toti)
     paths = graph.find_all_paths(start_node, end_node)
-#    print(paths)
     ListeTemps = []
     tpstot = 0
     indice = index_departure(start_node, end_node, time)
-#    indice = 2
     for path in paths:
         tpstot=0
         for i in range (1,len(path)):
@@ -207,10 +126,8 @@ def fastest(start_node, end_node, time):
                 a = convert_back(path[i])[indice] - convert_back(path[i-1])[indice]
                 if a <0:
                      a = convert_back(path[i])[indice+1] - convert_back(path[i-1])[indice]
-#            print(a)
             tpstot = tpstot + a
         ListeTemps.append(tpstot)
-#    print(ListeTemps)
     print("FASTEST \n Chemin effectué " , paths[ListeTemps.index(min(ListeTemps))])
     heureArrivée=(toti+min(ListeTemps))//60
     minuteArrivée=(toti+min(ListeTemps))%60
@@ -223,14 +140,12 @@ def foremost(start_node, end_vertex, time):
     minutes=time.split(':')[1]
     toti=int(heure)*60 + int(minutes)
     
-#    print(toti)
     paths = graph.find_all_paths(start_node, end_node)
-#    print(paths)
+
     ListeTemps = []
     tpstot = 0
     indice = index_departure(start_node, end_node, time)
     sens = go_or_not(start_node, end_node)
-#    indice = 2
     for path in paths:
         tpstot=0
         for i in range (1,len(path)):
@@ -260,8 +175,8 @@ def foremost(start_node, end_vertex, time):
 shortest(start_node,end_node)
 fastest(start_node,end_node, time)
 foremost(start_node,end_node, time)
-graph.add_node("z")
-print(graph.nodes())
+#graph.add_node("z")
+#print(graph.nodes())
 #print(convert_go('POISY_COLLEGE'))
 #paths = graph.find_all_paths('Arcadium','Place_des_Romains')
 #print(paths) 
