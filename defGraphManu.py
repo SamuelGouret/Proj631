@@ -9,6 +9,8 @@ Created on Thu Jan 23 08:40:54 2020
 #import data2py
 #from main0 import regularOrHolyday 
 
+#Lecture des fichiers
+
 data_file_name = '2_Piscine-Patinoire_Campus.txt'
 
 try:
@@ -42,6 +44,8 @@ def dates2dic(dates):
         dic[tmp[0]] = tmp[1:]
     return dic
 
+
+#recupération des différents éléments, arrêts et horaires des fichiers
 slited_content = content2.split("\n\n")
 regular_path = slited_content[0]
 regular_date_go = dates2dic(slited_content[1])
@@ -50,7 +54,7 @@ we_holidays_path = slited_content[3]
 we_holidays_date_go = dates2dic(slited_content[4])
 we_holidays_date_back = dates2dic(slited_content[5])
 
-slited_content = content1.split("\n\n")
+slited_content1 = content1.split("\n\n")
 regular_path1 = slited_content[0]
 regular_date_go1 = dates2dic(slited_content[1])
 regular_date_back1 = dates2dic(slited_content[2])
